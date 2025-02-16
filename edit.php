@@ -1,17 +1,12 @@
 <?php
-session_start();
 include "koneksi.php";
 
-if (!isset($_SESSION['username'])) {
-    header("location:login.php?pesan=logindulu");
-    exit;
-}
-
-$no = $_GET['no'];
-$sql = "SELECT * FROM novel WHERE no = '$no'";
+$id = $_GET['no'];
+$sql = "SELECT * FROM buku WHERE id = '$id' ";
 $query = mysqli_query($koneksi, $sql);
 
-while ($novel=mysqli_fetch_assoc($query)) {
+while($buku = mysqli_fetch_assoc($query)) {
+
 ?>
 
 <!DOCTYPE html>
@@ -19,24 +14,29 @@ while ($novel=mysqli_fetch_assoc($query)) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Tambah Data</title>
 </head>
 <body>
-    <h1>Edit</h1>
-    <form action="proses_edit.php" method="get">
-        <input type="hidden" name="no" value="<?=$novel['no']?>">
+    
+    <h1>Edit Data</h1>
 
-        <label for="">Judul</label><br>
-        <input type="text" name="judul" id="" value="<?=$novel['judul']?>"><br>
-
-        <label for="">Pengarang</label><br>
-        <input type="text" name="pengarang" id="" value="<?=$novel['pengarang']?>"><br>
-
-        <label for="">Harga</label><br>
-        <input type="number" name="harga" id="" value="<?=$novel['harga']?>"><br>
-
-        <input type="submit" value="Update">
+    <form action="proses_edit.php" method="POST">
+        <input type="hidden" name="id" value="<?= $buku['id']; ?>">
+        <label>Judul</label>
+        <input type="text" name="judul" value="<?php echo $buku['judul']; ?>"><br>
+        <label>Pengarang</label>
+        <input type="text" name="pengarang" value="<?php echo $buku['pengarang']; ?>"><br>
+        <label>Penerbit</label>
+        <input type="text" name="penerbit" value="<?php echo $buku['penerbit']; ?>"><br>
+        <label>Harga</label>
+        <input type="number" name="harga" value="<?php echo $buku['harga']; ?>"><br>
+        <input type="submit" value="Simpan" name="Simpan">
     </form>
+
 </body>
 </html>
-<?php } ?>
+
+
+<?php
+}
+?>
